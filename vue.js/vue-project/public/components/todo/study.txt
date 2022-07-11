@@ -1,0 +1,46 @@
+todo 폴더에
+Header
+Input
+List
+Footer
+총 4개파일 만들기
+
+안써도 template, script, style 태그는 무조건 생성하기.
+단축기는 vue 엔터
+
+4개파일 만든것은 app.vue 에 import해서 사용.
+\
+
+
+
+f12 -> application
+
+localstrage는 남아있음.
+session만 나가면 삭제됨.
+
+
+// 라이플사이클 훅
+훅이라는게 메소드를 호출해주는 것.
+화면에 보이도록 호출.
+업데이트 => beforeUpdate / .,....??
+
+** 차이점
+beforeUpdate 는 data() 사용 불가.
+create => data() 사용가능.
+
+beforeMount / mounted
+
+
+
+// 다른 파일 input과 list를 통신시켜야하기때문에, 
+간단하게 해결하는 방법이 있음.
+todolist파일에서 
+
+
+--------------------
+
+모달창 
+소스 가져오기
+https://vuejs.org/examples/#modal 로 브라우저 검색.
+소스 복사 common/modal.vue 파일에 붙여넣기.
+
