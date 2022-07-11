@@ -1,0 +1,207 @@
+----------- 20220711 수업일지
+
+** node.js 설치방법.
+Node.js®는 Chrome V8 JavaScript 엔진으로 빌드된 JavaScript 런타임입니다.
+런타임? 자바스크립트가 놀 수 있는 운동장 같은 개념.
+
+
+node.js 설치
+=> https://nodejs.org/ko/download/
+=> C:\Users\Administrator>npm -v 로 실행해서 설치되었는지 확인.
+=> 16.16.0 LTS 안정적, 신뢰도 높음 => 다운로드
+
+계속 넥스트 => finish하기
+
+cmd창 새로 열기
+C:\Users\Administrator>node -v
+입력 후
+v16.16.0 => 결과
+C:\Users\Administrator>npm -v
+입력후
+npm WARN config global `--global`, `--local` are deprecated. Use `--location=global` instead.
+8.11.0 => 결과
+
+비쥬얼 스튜디오에 확장 프로그램 설치하면 됨.
+
+D 드라이브에서 vuejs 폴더 생성 후 vscode에서 열기
+
+vetur 검색 (Vue tooling for VS Code) => install (설치)하기
+==> ??
+
+Prettier - Code formatter => 설치하기
+==> 
+
+new 터미널 열기
+npm i -g @vue/cli 입력 엔터
+쭈우욱 내용이 나옴. 안되면 화면을 껐다가 켜서 다시 해보기!!
+
+vue create vue-project 엔터
+=> vue-project는 프로그램 이름. 그걸 설치하겠다는 뜻. 
+
+=> 터미널 설치가 안되면
+cmd창 설치
+
+C:\Users\Administrator>cd /
+C:\>d:
+D:\>cd vuejs
+D:\vuejs>vue create vue-project
+하면
+Vue CLI v5.0.8
+? Please pick a preset: (Use arrow keys)
+> Default ([Vue 3] babel, eslint)
+  Default ([Vue 2] babel, eslint)
+  Manually select features 
+라고 결과가 나타남.
+
+화살표로 vue 3 선택하고 엔터 눌러서 실행.
+설치가 끝나면 vuejs 폴더에 뭐가 생김.
+D:\vuejs>cd vue-project 입력 후 엔터
+npm run serve 입력 후 엔터.
+
+
+
+  App running at:
+  - Local:   http://localhost:8080/
+  - Network: http://192.168.0.34:8080/
+
+  Note that the development build is not optimized.
+  To create a production build, run npm run build. 
+
+이렇게 결과가 나타남.
+
+ http://localhost:8080/ 이걸 복붙해서 인터넷창에 붙여넣고 엔터 해서 화면이 나타나면 설치 완료.
+
+
+ 개발을 위해서 가상서버를 사용한다.
+
+컴파일이 필요로 하는데, 할때마다 시간이 오래걸린다. 
+그래서 vue에서 가상서버를 누르면 바로 확인이 가능, 그래서
+가상서버로 확인하고 나중에 백엔드쪽으로 마무리 진행.
+백엔드, 프론트엔드의 가상서버 2군데 작업해서 진행할 것이다.
+
+vscode에서
+node_modules 이 폴더는 당분간 건들지 말것. 아직 잘 못만지기 때문에.
+public 폴더에는 정적인 작업.
+index.html 정적파일 => 수정할 수 없다.
+src => source의 줄임말.
+assets => 자원 / 이미지들이 여기에 관리됨.
+components => vue파일들이 들어 있고, components의 부모역할을 하는게 App.vue 이다.
+재활용성을 극대화 시켜서 사용하려고 components로 작업.
+
+main.js가 ??
+
+package.json 에서 설치된게 뭔지 알수있음.
+devDepend =>개발할 동안 사용할 라이브러리
+dependenicies => 개발이 끝나고 나서도 사용할 라이브러리
+scripts 에서 vue-cli-service... 를 입력해서 실행해주겠다. 
+웹펙의 기능?
+
+
+script 부분이  작동되는 부분.
+
+helloworld.vue 에서
+{{ }} 자바스크립트 변수에 저장된 값을 마크업하겠다(뿌리겠다)
+{{ }} 은 콧수염표기법이라고 함. 특수...어쩌고 함.
+
+template 은 화면에 나타나겠다.
+
+script는 자바스크립트를 사용하겠다.
+props 외부에서 값을 받겠다. 그 외부는 나를 import하는 곳.
+ 거기는 App.vue이고, 거기 문자열. 말함.
+ props는 함부로 값을 변경 할 수 없음. 정적인 친구.
+ 이 값을 바꿀 수 있는건 외부에 있는 값을 변경.
+ 슬레이브라고 표현하며, 주는대로 받는다는 뜻.
+ 무조건 외부에서 다른 값을 줘야만 변경할 수 있음.
+
+ props = 수동적인 친구. / state는 능동적인 친구.
+ state는 주도적으로 내가 원하는데로 값을 바꿀 수있음.
+
+---- 본격 수업시작.
+
+helloworld.vue 파일 지우고, App.vue에서 template,내용 지우고, script안에 import hello그거 다 지우고,   components: {
+	helloworld 글자 지우고.
+  } 
+template에서 h1태그 사용한 헬로우 작성해서 저장하면 화면에 헬로우라는 글자가 나타남.
+
+
+
+-> FavoriteSinger.vue를 생성.
+<template>
+    <img :src="imgSrc">    
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            imgSrc: ''
+        }
+    }
+}
+</script>
+
+<style scoped>
+
+
+</style>
+
+상단 내용 작성.
+
+부모에서 사용 img를 불러오기
+FavoriteSinger.vue 파일 복사 후 네임을 FavoriteSingerProps.vue로 변경하기
+FavoriteSingerProps.vue 파일 열기
+data(){ } 지우고, props :{ imgSrc: string, } 작성.
+template 태그 안에
+img 안에 클래스 추가 =>  class="imgsize"
+
+
+
+****** cmd에서 중간에 작업 중단하려면
+ctrl + C 누르고 한번더 ctrl + c 누르면
+일괄 작업을 끝내시겠습니까 (Y/N)? 
+나타남
+일괄 작업을 끝내시겠습니까 (Y/N)? y
+y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
