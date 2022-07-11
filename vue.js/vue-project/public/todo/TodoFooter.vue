@@ -1,0 +1,26 @@
+<template>
+    <div class="clearAllContainer">
+        <span class="clearAllBtn" @click="clearTodo" autofocus>Clear All</span>
+    </div>
+</template>
+
+<script>
+export default {
+    methods: {
+        clearTodo() {
+            this.$emit('clearTodo');
+            // 실행시킬 함수를 불러와야함.
+        }
+    }
+}
+</script>
+
+<style>
+    .clearAllContainer {
+        width: 8.5rem; height: 50px; line-height: 50px; 
+        background-color: white; border-radius: 5px; margin: 0 auto;
+    }
+    .clearAllBtn {
+        color :#e20303; display: block;
+    }
+</style>
