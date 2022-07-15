@@ -1,0 +1,54 @@
+-- 220715_오늘수업
+
+cmd창에서 폴더 생성
+vuejs 폴더에서 vue create vue-vuex-pjt 입력
+엔터
+Manually select features
+enter
+Babel, Router, Vuex, Linter *체크(스페이스바로) 그리고
+엔터
+3.x선택 enter
+no 엔터
+Airbnb
+엔터
+Lint on save
+엔터
+y엔터
+그리고 또 그냥 엔터
+
+=> vuex 수업
+
+---------------------------
+
+=> 소셜로그인 사용, shop만들기
+
+vue create vue-shop-pjt
+default vue3 선택
+cd vue-shop-pjt
+vue add router
+나오면 y 엔터
+vue add vuex
+엔터
+y 엔터
+vue add vuex / vue add router 설치한 것.
+npm i --s axios
+
+
+
+--- 총 설치
+vue create vue-shop-pjt
+cd vue-shop-pjt
+vue add vuex
+vue add router
+npm i --s axios
+설치
+
+
+
+https://developers.kakao.com/
+https://developers.naver.com/main/
+-----------------------
+
+phpsho
+
+
