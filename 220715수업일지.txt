@@ -48,7 +48,9 @@ npm i --s axios
 https://developers.kakao.com/
 https://developers.naver.com/main/
 -----------------------
+tip--> 
+vue-shop-pjt 파일에서 cmd창에서
+npm i --s vuex-persistedstate 입력
 
-phpsho
 
 
