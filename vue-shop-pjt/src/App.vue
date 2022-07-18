@@ -1,10 +1,25 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
+  <div>
+    <Header />
+    <router-view/>
+    <Footer />
+  </div>
+  <!-- <nav>
     <router-link to="/kakaologin">카카오 로그인</router-link>
-  </nav>
-  <router-view/>
+  </nav> -->
 </template>
+
+<script>
+import Header from './layout/Header';
+import Footer from './layout/Footer';
+
+export default {
+  components: { Header, Footer},
+  computed: {
+
+  }
+}
+</script>
 
 <style>
 #app {
@@ -27,4 +42,6 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+
 </style>
