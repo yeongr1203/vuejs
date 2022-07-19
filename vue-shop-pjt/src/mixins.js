@@ -13,7 +13,7 @@ export default {
         },
 
         // productCreate 안에있는 method 안에 get을 여기에 작성함.
-        async $get(url, param) {    
+        async $get(url, param) {        //$get(url=>문자열, param=>객체)
             return (await axios.get(url, { 
                 params: param   
                 // get방식으로 받아오기 때문에! param을 꼭 params: 안에 넣어줘야함!

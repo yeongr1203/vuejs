@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in productList" :key="product.id">
+          <tr v-for="(product,idx) in productList" :key="product.id">
             <!-- 통으로 받은 product2를 각 줄로 출력이 되는데, 이것을 각각 따로 보내려면, item을 뿌려줄 기준이 되는 id로 분류해서 출력시켜야 하기 때문에, item.id로 key값을 지정함. -->
             <td></td>
             <td>{{ product.product_name }}</td>
@@ -28,9 +28,10 @@
             <td>{{ product.add_delivery_price }}</td>
             <td>
               <!-- router-link = 선생님풀이, 책은 조금다름. 맘에 드는걸로!! -->
-              <router-link class="nav-link" :to="{ path:'/image_insert', query: { product_id: product.id } }">
+              <!-- <router-link class="nav-link" :to="{ path:'/image_insert', query: { product_id: product.id } }">
                 <button type="button" class="btn btn-info me-1">사진등록</button>
-              </router-link>
+              </router-link> -->
+              <button type="button" class="btn btn-info me-1" @click="goToImageInsert(idx)">사진등록</button>
 
               <router-link class="nav-link" :to="{ path:'/update', query: { product_id: product.id } }">
                 <button type="button" class="btn btn-warning me-1">수정</button>
@@ -67,7 +68,12 @@ export default {
     async getProductList() {
       this.productList = await this.$get('/api/productList2', {});
       // ProductList 를 배열로 통으로 받아오는 것을 product2 값으로 넣기 위해서 아래처럼 작성.
-      console.log(this.productList);    // proxy에서 배열로 들어온것 보임
+      // console.log(this.productList);  // proxy에서 배열로 들어온것 보임
+
+    },
+    goToImageInsert(idx) {
+      this.$store.commit('sallerSelectedProduct', this.productList[idx]);
+      this.$router.push( {path: '/image_insert'} );
     }
   }
 }

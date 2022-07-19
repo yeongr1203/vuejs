@@ -9,13 +9,17 @@ import createPersistedState from 'vuex-persistedstate';
 export default createStore({  
   state() {
     return {
-      user: {}
+      user: {},
+      sallerSelectedProduct: {},  // 추가됨.
     }
   },
   mutations: {
     user : (state, data) => {
       state.user = data;
-    }
+    },
+    sallerSelectedProduct: (state, data) => {
+      state.sallerSelectedProduct = data;
+    }   // 추가됨
   },
   plugins: [
     createPersistedState({
