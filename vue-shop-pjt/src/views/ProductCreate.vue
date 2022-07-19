@@ -50,6 +50,8 @@
               <select class="form-select" v-model="cate1" @change="changeCate1">
                 <!-- getCategoryList는 여기서 뿌리기. -->
                 <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
+                <!-- 즉, for ~ fo~문 사용한 것! -->
+                <!-- of를 사용시 객체들을 열거[배열]해준다. 원래 객체는 열거X // value = 정수값, name = 문자열로. -->
                 <!-- key에도 값을 사용. {{ name }} 찍는 것도 키값사용. -->
               </select>
             </div>
@@ -62,14 +64,13 @@
             </div>
 
             <div class="col-auto" v-if="cate2 !== ''">
-              <select class="form-select" v-model="selectedCateId">
+              <select class="form-select" v-model="product.category_id">
                 <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[cate1][cate2]">{{ cate.value }}</option>
                 <!-- in 사용한 것은 ?? -->
                 <!-- 찍는건 cate.value -->
               </select>
             </div>
-            {{ selectedCateId }}  
-            <!-- 나오는 값을 볼 수있음.  -->
+            <!-- {{ category_id }} // 나오는 값을 볼 수있음.  -->
           </div>
         </div>
       </div>
@@ -85,7 +86,7 @@
         <label class="col-md-3 col-form-label">출고일</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="number" class="form-control" v-model="product.outbound_days">
+            <input type="number" class="form-control" ref="outbound_days" v-model="product.outbound_days">
             <span class="input-group-text">일 이내 출고</span>
           </div>
         </div>
@@ -116,14 +117,13 @@ export default {
         add_delivery_price: 0,
         tags: '',
         outbound_days: 0,
-        category_id: 1,
+        category_id: '',
         seller_id: 1
       },      
       categoryObj: {},    
       cate1: '',
       cate2: '',
       cate3: '',
-      selectedCateId: '',
     };
   },
   created() {
@@ -181,10 +181,10 @@ export default {
     },
     changeCate1() {
       this.cate2 = '';
-      this.selectedCateId = '';
+      this.product.category_id = '';
     },
     changeCate2() {
-      this.selectedCateId = '';
+      this.product.category_id = '';
     },
     productInsert() {
       if(this.product.product_name === '') {
@@ -193,19 +193,41 @@ export default {
         return this.$swal('제품명은 필수 입력값입니다.');
       }
 
-      if(this.product.product_price() === '' || this.product.product_price === 0) {
+      if(this.product.product_price === '' || this.product.product_price === 0) {
         this.$refs.product_price.focus();
-        return this.$$swal('제품 가격을 입력해주세요.');
+        return this.$swal('제품 가격을 입력해주세요.');
       }
 
-      if(this.product.delivery_price() === '' || this.product.delivery_price === 0) {
+      if(this.product.delivery_price === '' || this.product.delivery_price === 0) {
         this.$refs.delivery_price.focus();
         return this.$swal('배송료를 입력하세요.');
       }
+      
+      if(this.product.category_id === '') {
+        return this.$swal('카테고리를 선택해주세요.')
+      }
 
+      if(this.product.outbound_days === '' || this.product.outbound_days === 0) {
+        this.$refs.delivery_price.focus();
+        return this.$swal('출고일을 입력하세요.');
+      }
 
-
-    }
+      this.$swal.fire({
+        title: '정말 등록하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '등록',
+        cancelButtonText: '취소'
+      }).then(async result => {
+        if(result.isConfirmed) {
+          const res = this.$post('/api/productInsert', this.product);
+          console.log(res);
+          if(res.result > 0) {
+            this.$swal.fire('저장되었습니다.', '', 'success');
+            this.$router.push( { path: '/sales' });
+          }
+        }
+      });
+    },
   }
 }
 </script>
