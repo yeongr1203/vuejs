@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(product,idx) in productList" :key="product.id">
+          <tr v-for="(product, idx) in productList" :key="product.id">
             <!-- 통으로 받은 product2를 각 줄로 출력이 되는데, 이것을 각각 따로 보내려면, item을 뿌려줄 기준이 되는 id로 분류해서 출력시켜야 하기 때문에, item.id로 key값을 지정함. -->
             <td></td>
             <td>{{ product.product_name }}</td>
@@ -69,7 +69,7 @@ export default {
       this.productList = await this.$get('/api/productList2', {});
       // ProductList 를 배열로 통으로 받아오는 것을 product2 값으로 넣기 위해서 아래처럼 작성.
       // console.log(this.productList);  // proxy에서 배열로 들어온것 보임
-
+      console.log(this.productList);
     },
     goToImageInsert(idx) {
       this.$store.commit('sallerSelectedProduct', this.productList[idx]);
