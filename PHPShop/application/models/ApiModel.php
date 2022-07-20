@@ -74,4 +74,59 @@ class ApiModel extends Model {
         $stmt -> execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+    // product_id, type, path 이것은 파일 경로를 알 수 있는 것들.
+    public function productImageInsert(&$param) {
+        $sql =
+        "   INSERT INTO t_product_img
+            SET product_id = :product_id
+              , type = :type
+              , path = :path        
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue("product_id", $param["product_id"]);
+        $stmt->bindValue("type", $param["type"]);
+        $stmt->bindValue("path", $param["path"]);
+        // path는 파일명만 저장!(확장자 포함)
+        $stmt -> execute();
+        return $stmt -> rowCount();        
+    }
+
+    // 상세페이지 안에 등록할 img 띄우기
+    public function productImageList(&$param) {
+        $sql =
+        "   SELECT * 
+            FROM t_product_img 
+            WHERE product_id = :product_id
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":product_id",$param["product_id"]);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // 상세페이지 안 등록된 이미지 삭제
+    public function porductImageDelete(&$param) {
+        $sql =
+        "   DELETE FROM t_product_img
+            WHERE id = :product_image_id        
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":product_image_id", $param["product_image_id"]);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
+    // 상세페이지 해당 img 선택해서 삭제.   -> 두번쨰방법.
+    public function productImgPath(&$param) {
+        $sql =
+        "   SELECT *
+            FROM t_product_img
+            WHERE id = :product_image_id
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":product_image_id", $param["product_image_id"]);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
 }
