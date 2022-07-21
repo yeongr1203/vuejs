@@ -1,6 +1,8 @@
 <?php
 namespace application\controllers;
 
+use Exception;
+
 class ApiController extends Controller {
     public function categoryList() {
         return $this->model->getCategoryList();
@@ -11,9 +13,28 @@ class ApiController extends Controller {
         return [_RESULT => $this->model->productInsert($json)];
     }
 
+    public function productList() {
+        // return $this->model->productList();
+        $param = [];
+
+        if(isset($_GET["cate3"])) {
+            $cate3 = intval($_GET["cate3"]);
+            if($cate3 > 0) {
+                $param["cate3"] = $cate3;
+            }
+        } else {
+            if(isset($_GET["cate1"])) {
+                $param["cate1"] = $_GET["cate1"];
+            }
+            if(isset($_GET["cate2"])) {
+                $param["cate2"] = $_GET["cate2"];
+            }
+        }                 
+        return $this->model->productList($param);  
+    }
+
     public function productList2() {
-        $result = $this->model->productList2();
-        return $result === false ? [] : $result;
+        return $this->model->productList2();
     }
 
     // 제품 사진 등록 page 부분
@@ -120,7 +141,7 @@ class ApiController extends Controller {
                 $dirPath = _IMG_PATH.'/'.$delpath->product_id.'/'.$delpath->type.'/'.$delpath->path;
                 unlink($dirPath);
 
-                $result = $this->model->porductImageDelete($param);
+                $result = $this->model->productImageDelete($param);
                 break;
         }
         return [ _RESULT => $result ];
@@ -142,6 +163,73 @@ class ApiController extends Controller {
                     break;
             }
             return [ _RESULT => $result ];
-        */
+        */        
+    }
+
+    public function productDelect() {
+        $urlPaths = getUrlPaths();
+        if(!isset($urlPaths[2])) {
+            exit();
+        }
+        $result = 0;
+        switch(getMethod()) {
+            case _DELETE:
+                $product_id = $urlPaths[2];
+                $param = [
+                    'product_id' => intval($product_id)
+                ];
+                try {
+                    // beginTransaction : mySQL의 autoCommit을 끄는 역할
+                    $this->model->beginTransaction();
+                    $result1 = $this->model->productImageDelete($param);
+                    $dirname = _IMG_PATH . '/' . $product_id;
+                    //내가 만든 파일과 폴더 삭제(폴더 안에 폴더가 또 있으면 삭제 불가로 FileUtils에 rmdirAll함수 존재함!!)
+                    // for($i=1;$i<4;$i++) {
+                    //     array_map('unlink', glob("$dirname/$i/*.*"));
+                    // }
+                    // for($i=1;$i<4;$i++) {
+                    //     array_map('rmdir', glob("$dirname/$i"));
+                    // }
+                    // rmdir($dirname);
+                    $result = $this->model->productDelete($param);
+                    if($result) {
+                        rmdirAll($dirname);
+                        $this->model->commit();
+                    } else {
+                        $this->model->rollback();
+                    } 
+                } catch (Exception $e) {
+                    print "에러발생<br>";
+                    print $e . "<br>";
+                    $this->model->rollback();
+                }
+            return [_RESULT => $result];
+        }
+    }
+
+    // category
+    public function cate1List() {
+        return $this->model->cate1List();
+    }
+
+    public function cate2List() {
+        $urlPaths = getUrlPaths();
+        if(count($urlPaths) !== 3) {
+            exit();
+        }        
+        $param = [ "cate1" => $urlPaths[2] ];
+        return $this->model->cate2List($param);
+    }
+
+    public function cate3List() {
+        $urlPaths = getUrlPaths();
+        if(count($urlPaths) !== 4) {
+            exit();
+        }        
+        $param = [ 
+            "cate1" => $urlPaths[2], 
+            "cate2" => $urlPaths[3]
+        ];
+        return $this->model->cate3List($param);
     }
 }
