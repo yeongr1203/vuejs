@@ -10,7 +10,8 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th></th>
+            <th>
+            </th>
             <th>제품명</th>
             <th>제품가격</th>
             <th>배송비</th>
@@ -21,7 +22,11 @@
         <tbody>
           <tr v-for="(product, idx) in productList" :key="product.id">
             <!-- 통으로 받은 product2를 각 줄로 출력이 되는데, 이것을 각각 따로 보내려면, item을 뿌려줄 기준이 되는 id로 분류해서 출력시켜야 하기 때문에, item.id로 key값을 지정함. -->
-            <td></td>
+            <td>
+              <img v-if="product.path !== null" 
+                :src="`/static/img/${product.id}/1/${product.path}`" 
+                style="height:50px; width:auto;">
+            </td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.product_price }}</td>
             <td>{{ product.delivery_price }}</td>
@@ -31,13 +36,9 @@
               <!-- <router-link class="nav-link" :to="{ path:'/image_insert', query: { product_id: product.id } }">
                 <button type="button" class="btn btn-info me-1">사진등록</button>
               </router-link> -->
-              <button type="button" class="btn btn-info me-1" @click="goToImageInsert(idx)">사진등록</button>
-
-              <router-link class="nav-link" :to="{ path:'/update', query: { product_id: product.id } }">
-                <button type="button" class="btn btn-warning me-1">수정</button>
-              </router-link>
-
-              <button type="button" class="btn btn-danger me-1">삭제</button>
+              <button type="button" class="btn btn-info me-1" @click="goToImageInsert(Idx)">사진등록</button>
+              <button type="button" class="btn btn-warning me-1">수정</button>
+              <button type="button" class="btn btn-danger" @click="deleteProduct(product.id, idx)">삭제</button>
             </td>
           </tr>
         </tbody>
@@ -58,7 +59,10 @@ export default {
   data() {
     return {
       // 통으로 받아온 값을 배열로 받아오기 때문에 담을 배열이 필요함.
-      productList: []
+      productList: [],
+      cate1List: [],
+      cate2List: [],
+      cate3List: []
     }
   },
   created() {
@@ -74,8 +78,15 @@ export default {
     goToImageInsert(idx) {
       this.$store.commit('sallerSelectedProduct', this.productList[idx]);
       this.$router.push( {path: '/image_insert'} );
+    },
+    async deleteProduct(productId, idx) {
+      console.log(productId);
+      const res = await this.$delete(`/api/deleteProduct/${productId}`, {});
+      if(res.result === 1) {
+        this.productList.splice(idx, 1);        
+      }
     }
-  }
+  },
 }
 </script>
 

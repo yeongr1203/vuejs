@@ -135,25 +135,64 @@ export default {
     this.getProductImage();
   },
   methods: {
+     changeCate1() {
+      this.selectedCate2 = '';
+      this.selectedCate3 = 0;
+      this.cate2List = [];
+      this.cate3List = [];
+      this.getCate2List(this.selectedCate1);
+      this.getProductList();
+    },
+    changeCate2() {
+      this.selectedCate3 = 0;
+      this.cate3List = [];
+      this.getCate3List(this.selectedCate1, this.selectedCate2);
+      this.getProductList();
+    },
+
+    async getProductList() {      
+      const param = {};
+      if(this.selectedCate3 > 0) {
+        param['cate3'] = this.selectedCate3;
+      } else {
+        if(this.selectedCate1 !== '') {
+          param['cate1'] = this.selectedCate1;
+        }
+        if(this.selectedCate2 !== '') {
+          param['cate2'] = this.selectedCate2;
+        }
+      }
+      this.productList = await this.$get('/api/productList', param);
+    },
+
+    async getCate1List() {
+      this.cate1List = await this.$get('/api/cate1List', {});
+    },
+    async getCate2List(cate1) {
+      this.cate2List = await this.$get(`/api/cate2List/${cate1}`, {});
+    },
+    async getCate3List(cate1, cate2) {
+      this.cate3List = await this.$get(`/api/cate3List/${cate1}/${cate2}`, {});
+    },     
     async getProductImage() {
       this.productImage = await this.$get(`/api/productImageList/${this.productDetail.id }`);
     },
+  
+    // async uploadFile(files, type) {
+    //   console.log(files);
+    //   const image = await this.$base64(files[0]); 
+    //   // resolve 값을 여기로 보내줌.
+    //   // image = e.target.result ($base64에서 받을 때 문자열로 받음.)
+    //   const formData = { image }; 
+    //   const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}`, formData); // error면 받는것.
+    //   // 객체가 넘어왔을때, numberfild가 error인 것만 받겠다!
+    //   console.log(error);
+    // },
 
-    async uploadFile(files, type) {
-      console.log(files);
-      const image = await this.$base64(files[0]); 
-      // resolve 값을 여기로 보내줌.
-      // image = e.target.result ($base64에서 받을 때 문자열로 받음.)
-      const formData = { image }; 
-      const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}`, formData); // error면 받는것.
-      // 객체가 넘어왔을때, numberfild가 error인 것만 받겠다!
-      console.log(error);
-    },
-
-    async deleteImage(id) {
-      const del = await this.$delete(`/api/productImageDelete/${id}`);
-      console.log(del);
-    },
+    // async deleteImage(id) {
+    //   const del = await this.$delete(`/api/productImageDelete/${id}`);
+    //   console.log(del);
+    // },
     /*  --- 선생님 풀이.
       async deleteImage({ id, product_id, type, path }}) {
         const result = await this.$delete(`/api/productImageDelete/${id}/${product_id}/${type}/${path}`);
@@ -163,8 +202,15 @@ export default {
       },
 
     */
+  }
+}
 
-    
+</script>
+
+<style>
+
+</style>
+<!--
 
     // 7-19 작성 후 삭제.
     // async getProductDetail() {
@@ -176,10 +222,5 @@ export default {
     //   );
     //   console.log(productDetail);
     // }
-  }
-}
-</script>
 
-<style>
-
-</style>
+-->
